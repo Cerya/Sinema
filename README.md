@@ -12,7 +12,7 @@ The default download method is BitTorrent Remote.
 This requires you to download BitTorrent Remote on your smartphone.
 Next you must install BitTorrent Client on you computer.
 Activate remote usage on the client and you are ready to go.
-BUT when you download with BitTorrent Remote, your computer must be running BitTorrent Client.
+BUT when you download with BitTorrent Remote, both your computer and BitTorrent Client must be running.
 
 BitTorrent Sync
 =================
