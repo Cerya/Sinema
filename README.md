@@ -7,7 +7,7 @@ Android application that uses the yts.re API to fetch the newest movies in DVD o
 Usage
 ======
 
-BitTorrent Remote
+#BitTorrent Remote
 
 The default download method is BitTorrent Remote.
 This requires you to download BitTorrent Remote on your smartphone.
@@ -15,7 +15,7 @@ Next you must install BitTorrent Client on you computer.
 Activate remote usage on the client and you are ready to go.
 BUT when you download with BitTorrent Remote, your computer must be running BitTorrent Client.
 
-BitTorrent Sync
+#BitTorrent Sync
 
 The second option, and in my opinion the best one, is BitTorrent Sync.
 This requires you to download BitTorrent Sync on your smathphone.
