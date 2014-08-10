@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!--
+         A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked.
+    -->
+
+    <!-- Allows the user to choose a ringtone in the 'notification' category. -->
+    <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
+    <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
+
+    <!-- NOTE: This preference will be enabled only when the checkbox above is checked. --><ListPreference android:summary="Search for a specific genre" android:enabled="true" android:key="genre_list" android:title="Genre" android:entryValues="@array/pref_genre_values" android:entries="@array/pref_genre_titles" android:defaultValue="All"/>
+        <ListPreference android:summary="Search for a specific rating" android:key="rating_list" android:title="Rating" android:entries="@array/pref_rating_titles" android:entryValues="@array/pref_rating_values" android:enabled="true" android:defaultValue="0"/>
+        <ListPreference android:summary="Search for a specific quality" android:key="quality_list" android:title="Quality" android:entries="@array/pref_quality_titles" android:entryValues="@array/pref_quality_values" android:defaultValue="720p" android:enabled="true"/>
+        <ListPreference android:summary="Limit the result" android:key="limit_list" android:title="Limit" android:defaultValue="50" android:entries="@array/pref_limit_titles" android:entryValues="@array/pref_limit_titles" android:enabled="true"/>
+        <ListPreference android:key="sort_list" android:title="Sort" android:summary="Sorts the results" android:defaultValue="Seeds" android:entryValues="@array/pref_sort_titles" android:entries="@array/pref_sort_titles"/>
+        <ListPreference android:key="order_list" android:title="Order by" android:summary="Order the results" android:defaultValue="desc" android:entryValues="@array/pref_order_values" android:entries="@array/pref_order_titles"/>
+
+</PreferenceScreen>

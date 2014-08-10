@@ -1,0 +1,71 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string-array name="pref_genre_titles">
+		<item >All</item><item >Action</item><item >Adventure</item><item >Animation</item><item >Biography</item><item >Comedy</item><item >Crime</item><item >Documentary</item><item >Drama</item><item >Family</item><item >Fantasy</item><item >Film-Noir</item><item >History</item><item >Horror</item>
+        <item >Music</item>
+        <item >Musical</item>
+        <item >Mystery</item>
+        <item >Romance</item>
+        <item >Sci-Fi</item>
+        <item >Short</item>
+        <item >Sport</item>
+        <item >Thriller</item>
+        <item >War</item>
+        <item >Western</item>
+    </string-array>
+    <string-array name="pref_genre_values"><item >All</item><item >Action</item><item >Adventure</item><item >Animation</item><item >Biography</item><item >Comedy</item><item >Crime</item><item >Documentary</item><item >Drama</item><item >Family</item><item >Fantasy</item><item >Film-Noir</item><item >History</item><item >Horror</item><item >Music</item><item >Musical</item><item >Mystery</item><item >Romance</item><item >Sci-Fi</item><item >Short</item><item >Sport</item><item >Thriller</item><item >War</item><item >Western</item>
+    </string-array>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_filter">Filter</string>
+    <string-array name="pref_rating_titles"><item >0+</item><item >1+</item><item >2+</item><item >3+</item><item >4+</item><item >5+</item><item >6+</item><item >7+</item><item >8+</item><item >9+</item></string-array>
+    <string-array name="pref_rating_values"><item >0</item><item >1</item><item >2</item><item >3</item><item >4</item><item >5</item><item >6</item><item >7</item><item >8</item><item >9</item></string-array>
+    <string-array name="pref_quality_titles">
+        <item >Best quality (1080p)</item>
+        <item >Good quality (720p)</item>
+        <item >Three-Dimensional (3D)</item>
+    </string-array>
+    <string-array name="pref_quality_values"><item >1080p</item><item >720p</item><item >3D</item></string-array>
+    <string-array name="pref_limit_titles">
+        <item >10</item>
+        <item >20</item>
+        <item >30</item>
+        <item >40</item>
+        <item >50</item>
+    </string-array>
+    <string-array name="pref_order_titles">
+        <item >Descending</item>
+        <item >Ascending</item>
+    </string-array>
+    <string-array name="pref_order_values">
+        <item >desc</item>
+        <item >asc</item>
+    </string-array>
+    <string-array name="pref_sort_titles">
+        <item >Date</item>
+        <item >Seeds</item>
+        <item >Peers</item>
+        <item >Size</item>
+        <item >Alphabet</item>
+        <item >Rating</item>
+        <item >Downloaded</item>
+        <item >Year</item>
+    </string-array>
+    <string-array name="pref_transfer_method_titles">
+        <item >Use BitTorrent Sync (Recommended)</item>
+        <item >Use BitTorrent Remote</item>
+    </string-array>
+    <string-array name="pref_transfer_method_values">
+        <item >sync</item>
+        <item >remote</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
+    <!--
+         NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it.
+    -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <ListPreference android:key="transfer_method_list" android:title="Transfer Method" android:summary="Choose your preferred transfer method." android:defaultValue="remote" android:enabled="true" android:entryValues="@array/pref_transfer_method_values" android:entries="@array/pref_transfer_method_titles"/>
+    <EditTextPreference android:title="BitTorrent Sync Path" android:enabled="true" android:summary="The path you chose for BitTorrent Sync" android:key="sync_path_text"/>
+
+</PreferenceScreen>
