@@ -68,9 +68,8 @@
         android:layout_below="@id/filterLayout"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:singleLine="true"    
         android:hint="Matching keywords title search" >
-
-        <requestFocus />
     </EditText>
 
     <ListView
