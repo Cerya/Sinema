@@ -17,12 +17,12 @@ public final class R {
 		public static final int folder = 0x7f02005e;
 	}
 	public static final class id {
-		public static final int file_path_text_view = 0x7f070047;
-		public static final int file_picker_checkbox = 0x7f070044;
-		public static final int file_picker_image = 0x7f070042;
-		public static final int file_picker_text = 0x7f070043;
-		public static final int ok = 0x7f070045;
-		public static final int start_file_picker_button = 0x7f070046;
+		public static final int file_path_text_view = 0x7f070049;
+		public static final int file_picker_checkbox = 0x7f070046;
+		public static final int file_picker_image = 0x7f070044;
+		public static final int file_picker_text = 0x7f070045;
+		public static final int ok = 0x7f070047;
+		public static final int start_file_picker_button = 0x7f070048;
 	}
 	public static final class layout {
 		public static final int file_picker_empty_view = 0x7f030019;

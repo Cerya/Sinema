@@ -35,13 +35,16 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -53,8 +56,9 @@ import com.loopj.android.image.SmartImageView;
 
 /**
  * TODO
- * Sort options in settings
+ * Add a "Thinklist"
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class MainActivity extends ActionBarActivity {
 	private List<Movie> movies = new ArrayList<Movie>();
 	private String trailer;
@@ -74,6 +78,7 @@ public class MainActivity extends ActionBarActivity {
 	ListView list;
 	double newVersion = 0.0;
 	private static final int REQUEST_PICK_FILE = 999;
+	EditText keywords;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,11 +97,30 @@ public class MainActivity extends ActionBarActivity {
 		limit = settings.getString("limit_list", SinemaConstant.LIMIT);
 		order = settings.getString("order_list", SinemaConstant.ORDER);
 		sync_path = settings.getString("sync_path_text", "");
+		keywords = (EditText) findViewById(R.id.txtKeywords);
+		new DeleteTask().execute("");
 		init();
+		new UpdateTask().execute(""); 
+		keywords.setOnKeyListener(new View.OnKeyListener() {
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+		       if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+		    	   new LoadOperation(MainActivity.this).execute(true);
+		    	   InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		    	   imm.hideSoftInputFromWindow(keywords.getWindowToken(), 0);
+		    	   if(adapter!=null){
+		    		   movies.clear();
+		    		   list.invalidateViews();
+		    		   adapter.notifyDataSetChanged();
+		    	   }
+		    	   return true;
+		       }
+		       return false;
+		   }
+		});
 	}
 	
 	private void init(){
-		new DeleteTask().execute("");
 		if(isNetworkAvailable()){
 			client = settings.getString("transfer_method_list", SinemaConstant.CLIENT);
 			genre = settings.getString("genre_list", SinemaConstant.GENRE);
@@ -158,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	
 	private void populateMovieList(String filter) throws IOException {
-    	doc = Jsoup.connect(SinemaConstant.MOVIE_LIST_URL+"?sort="+SinemaConstant.SORT+"&rating="+rating+"&genre="+genre+"&quality="+quality+"&order="+order+"&sort="+sort+"&limit="+limit).ignoreContentType(true).timeout(5 * 1000).get();
+    	doc = Jsoup.connect(SinemaConstant.MOVIE_LIST_URL+"?sort="+SinemaConstant.SORT+"&rating="+rating+"&genre="+genre+"&quality="+quality+"&order="+order+"&sort="+sort+"&limit="+limit+"&keywords="+keywords.getText().toString().replace(" ", "%20")).ignoreContentType(true).timeout(5 * 1000).get();
         Elements resultList = doc.select("item");
         Element movie = null;
         for (int i=0;i<resultList.size();i++) {
@@ -190,7 +214,6 @@ public class MainActivity extends ActionBarActivity {
 		list = (ListView) findViewById(R.id.listMovies);
 		adapter.setNotifyOnChange(true);
 		list.setAdapter(adapter);
-		
 	}
 
 
@@ -271,7 +294,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 	
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
@@ -337,6 +359,7 @@ public class MainActivity extends ActionBarActivity {
     				Toast.makeText(MainActivity.this, "You must install BitTorrent Remote for this to work.", Toast.LENGTH_LONG).show();
     			else
     				Toast.makeText(MainActivity.this, "You must install BitTorrent Sync for this to work.", Toast.LENGTH_LONG).show();
+    			cancel(true);
     		}
     		try {
 				Thread.sleep(1500);
@@ -439,32 +462,35 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result) {
-        	populateListView();
-        	TextView setRating = (TextView) findViewById(R.id.txtSetRating);
-    		TextView setGenre  = (TextView) findViewById(R.id.txtSetGenre);
-    		TextView setQuality  = (TextView) findViewById(R.id.txtSetQuality);
-    		TextView setResult  = (TextView) findViewById(R.id.txtSetLimit);
-    		//TextView setOrder  = (TextView) findViewById(R.id.txtSetOrder);
-    		TextView setSort  = (TextView) findViewById(R.id.txtSetSort);
-    		//setOrder.setText(order);
-    		setSort.setText(sort);
-    		setRating.setText(rating+"+");
-    		setGenre.setText(genre);
-    		setQuality.setText(quality);
-    		setResult.setText("#"+movies.size());
-    		mProgressDialog.dismiss();
-			if(sync_path.equalsIgnoreCase("") && client.equalsIgnoreCase("sync")){
-				//Select Sync Folder
-				Intent intent = new Intent(MainActivity.this, FilePickerActivity.class);
-				intent.putExtra(FilePickerActivity.EXTRA_SELECT_DIRECTORIES_ONLY, true);
-				intent.putExtra(FilePickerActivity.EXTRA_SELECT_FILES_ONLY, false);
-				intent.putExtra(FilePickerActivity.EXTRA_SELECT_MULTIPLE, false);
-				intent.putExtra(FilePickerActivity.EXTRA_FILE_PATH, Environment.getExternalStorageDirectory().getAbsolutePath());
-				startActivityForResult(intent, REQUEST_PICK_FILE);
-				Toast.makeText(MainActivity.this, "(Long) hold the file you selected for BitTorrent Sync.", Toast.LENGTH_LONG).show();
-			}
-			Toast.makeText(MainActivity.this, "Checking for updates...", Toast.LENGTH_LONG).show();
-            new UpdateTask().execute(""); 
+            if(movies.size() > 0){
+	        	populateListView();
+	        	TextView setRating = (TextView) findViewById(R.id.txtSetRating);
+	    		TextView setGenre  = (TextView) findViewById(R.id.txtSetGenre);
+	    		TextView setQuality  = (TextView) findViewById(R.id.txtSetQuality);
+	    		TextView setResult  = (TextView) findViewById(R.id.txtSetLimit);
+	    		//TextView setOrder  = (TextView) findViewById(R.id.txtSetOrder);
+	    		TextView setSort  = (TextView) findViewById(R.id.txtSetSort);
+	    		//setOrder.setText(order);
+	    		setSort.setText(sort);
+	    		setRating.setText(rating+"+");
+	    		setGenre.setText(genre);
+	    		setQuality.setText(quality);
+	    		setResult.setText("#"+movies.size());
+	    		
+	    		mProgressDialog.dismiss();
+				if(sync_path.equalsIgnoreCase("") && client.equalsIgnoreCase("sync")){
+					//Select Sync Folder
+					Intent intent = new Intent(MainActivity.this, FilePickerActivity.class);
+					intent.putExtra(FilePickerActivity.EXTRA_SELECT_DIRECTORIES_ONLY, true);
+					intent.putExtra(FilePickerActivity.EXTRA_SELECT_FILES_ONLY, false);
+					intent.putExtra(FilePickerActivity.EXTRA_SELECT_MULTIPLE, false);
+					intent.putExtra(FilePickerActivity.EXTRA_FILE_PATH, Environment.getExternalStorageDirectory().getAbsolutePath());
+					startActivityForResult(intent, REQUEST_PICK_FILE);
+					Toast.makeText(MainActivity.this, "(Long) hold the file you selected for BitTorrent Sync.", Toast.LENGTH_LONG).show();
+				}
+            } else {
+            	Toast.makeText(MainActivity.this, "No movies found.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 	
@@ -501,6 +527,7 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
     }
+
 		
 	/*
 	 * 
@@ -628,7 +655,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                needsUpdate = checkForUpdate();
+            	needsUpdate = checkForUpdate();
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -637,6 +664,14 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(MainActivity.this, "Checking for updates...", Toast.LENGTH_LONG).show();
+            mProgressDialog.show();
+        }
+        
+        
         @Override
         protected void onPostExecute(String result) {
             if (needsUpdate) {
@@ -759,7 +794,11 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
-
+                
+                //Uri packageURI = Uri.parse("package:" + MainActivity.class.getPackage().getName());
+                //Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
+                //startActivity(uninstallIntent);
+                
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(new File(SinemaConstant.DOWNLOAD_PATH + SinemaConstant.APPNAME + newVersion + ".apk")), "application/vnd.android.package-archive");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

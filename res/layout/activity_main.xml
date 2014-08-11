@@ -9,6 +9,7 @@
     tools:context="com.nami.android.sinema.MainActivity" >
 
     <LinearLayout
+        android:id="@+id/filterLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp" >
@@ -60,11 +61,23 @@
 
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/txtKeywords"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/filterLayout"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Matching keywords title search" >
+
+        <requestFocus />
+    </EditText>
+
     <ListView
         android:id="@+id/listMovies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp" >
+        android:layout_below="@+id/txtKeywords" >
 
     </ListView>
 

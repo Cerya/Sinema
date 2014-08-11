@@ -5,7 +5,7 @@ import java.io.File;
 import android.os.Environment;
 
 public final class SinemaConstant {
-	public static final double VERSION = 1.0;
+	public static final double VERSION = 1.2;
 	public static final String APPNAME = "Sinema";
 	public static final String MOVIE_LIST_URL = "http://yts.re/api/list.xml";
 	public static final String MOVIE_DETAIL_URL = "http://yts.re/api/movie.xml";
@@ -16,7 +16,7 @@ public final class SinemaConstant {
 	public static final String LIMIT = "50";
 	public static final String SORT = "Seeds";
 	public static final String ORDER = "desc";
-	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +"Download"+ File.separator +APPNAME+ File.separator;//"/sdcard/Download/";
+	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +"Download"+ File.separator;//"/sdcard/Download/";
 	public static final String RETURN_MESSAGE = "Press the back button to return to "+APPNAME;
 	public static final String MAIL_TO = "trigger@ifttt.com";
 	public static final String MAIL_FROM = "sinemaapp@outlook.com";
