@@ -20,7 +20,6 @@ import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -84,11 +83,6 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-		mProgressDialog = new ProgressDialog(MainActivity.this);
-		mProgressDialog.setIndeterminate(true);
-		mProgressDialog.setTitle("Loading");
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setCancelable(false);
 		client = settings.getString("transfer_method_list", SinemaConstant.CLIENT);
 		genre = settings.getString("genre_list", SinemaConstant.GENRE);
 		sort = settings.getString("sort_list", SinemaConstant.SORT);
@@ -132,8 +126,6 @@ public class MainActivity extends ActionBarActivity {
 			sync_path = settings.getString("sync_path_text", "");
 			if(should_update){
 				should_update = false;
-				mProgressDialog.setMessage("Initializing...\n- Fetching movies\n- Fetching trailers\n- Fetching torrents");
-				mProgressDialog.show();
 				new LoadOperation(MainActivity.this).execute(true);
 				if(adapter!=null){
 					movies.clear();
@@ -142,8 +134,6 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		} else {
-			mProgressDialog.setMessage("Please check your internet connection...\nShutting down Sinema");
-			mProgressDialog.show();
 			new LoadOperation(MainActivity.this).execute(false);
 		}
 	}
@@ -182,8 +172,12 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	
 	private void populateMovieList(String filter) throws IOException {
-    	doc = Jsoup.connect(SinemaConstant.MOVIE_LIST_URL+"?sort="+SinemaConstant.SORT+"&rating="+rating+"&genre="+genre+"&quality="+quality+"&order="+order+"&sort="+sort+"&limit="+limit+"&keywords="+keywords.getText().toString().replace(" ", "%20")).ignoreContentType(true).timeout(5 * 1000).get();
-        Elements resultList = doc.select("item");
+		if(!keywords.getText().toString().equalsIgnoreCase("")){
+			doc = Jsoup.connect(SinemaConstant.MOVIE_LIST_URL+"?sort="+SinemaConstant.SORT+"&rating="+rating+"&genre="+genre+"&quality="+quality+"&order="+order+"&sort="+sort+"&limit="+limit+"&keywords="+keywords.getText().toString().replace(" ", "%20")).ignoreContentType(true).timeout(10 * 1000).get();
+		} else {
+			doc = Jsoup.connect(SinemaConstant.MOVIE_LIST_URL+"?sort="+SinemaConstant.SORT+"&rating="+rating+"&genre="+genre+"&quality="+quality+"&order="+order+"&sort="+sort+"&limit="+limit).ignoreContentType(true).timeout(10 * 1000).get();
+		}
+    	Elements resultList = doc.select("item");
         Element movie = null;
         for (int i=0;i<resultList.size();i++) {
         	movie = resultList.get(i);
@@ -269,11 +263,6 @@ public class MainActivity extends ActionBarActivity {
 					if(client.equalsIgnoreCase("remote")){
 						new StartTransferMethod().execute(currentMovie.getMagnetLink());
 					} else {
-						mProgressDialog = new ProgressDialog(MainActivity.this);
-		                mProgressDialog.setMessage("Downloading Torrent File");
-		                mProgressDialog.setIndeterminate(true);
-		                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		                mProgressDialog.setCancelable(false);
 		                final DownloadTask downloadTask = new DownloadTask(MainActivity.this);
 		                new StartTransferMethod().execute(currentMovie.getMagnetLink());
 		                // execute this when the downloader must be fired
@@ -420,6 +409,11 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(Boolean... params) {
         	if(params[0].booleanValue()){
+        		if(keywords.getText().toString().isEmpty()){
+    	        	mProgressDialog.setMessage("Initializing...\n- Fetching movies\n- Fetching trailers\n- Fetching torrents");
+        		} else {
+	    			mProgressDialog.setMessage("Searching for: " + keywords.getText().toString() + "\n\nCan't find your movie?\nTry searching by actor names");
+        		}
                 try {
                 	populateMovieList("");
                 	
@@ -428,6 +422,9 @@ public class MainActivity extends ActionBarActivity {
                 }
                 
         	} else {
+        		mProgressDialog.setTitle("Connection problem");
+        		mProgressDialog.setMessage("Please check your internet connection...\nShutting down Sinema");
+    			mProgressDialog.show();
         		try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
@@ -448,7 +445,13 @@ public class MainActivity extends ActionBarActivity {
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
-            mProgressDialog.show();
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+			mProgressDialog.setIndeterminate(true);
+	        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        mProgressDialog.setCancelable(false);
+	        mProgressDialog.setTitle("Loading");
+	        mProgressDialog.show();
+			
         }
         
         @Override
@@ -477,7 +480,6 @@ public class MainActivity extends ActionBarActivity {
 	    		setQuality.setText(quality);
 	    		setResult.setText("#"+movies.size());
 	    		
-	    		mProgressDialog.dismiss();
 				if(sync_path.equalsIgnoreCase("") && client.equalsIgnoreCase("sync")){
 					//Select Sync Folder
 					Intent intent = new Intent(MainActivity.this, FilePickerActivity.class);
@@ -491,6 +493,7 @@ public class MainActivity extends ActionBarActivity {
             } else {
             	Toast.makeText(MainActivity.this, "No movies found.", Toast.LENGTH_LONG).show();
             }
+            mProgressDialog.dismiss();
         }
     }
 	
@@ -567,6 +570,7 @@ public class MainActivity extends ActionBarActivity {
                 int fileLength = connection.getContentLength();
                 // download the file
                 if (fileLength > 0) {
+            		mProgressDialog.setMessage("Downloading Torrent File");
                     input = connection.getInputStream();
                     //String dir = SinemaConstant.DOWNLOAD_PATH;
                     //create folder
@@ -618,6 +622,11 @@ public class MainActivity extends ActionBarActivity {
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
+			mProgressDialog = new ProgressDialog(MainActivity.this);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setTitle("Downloading");
             mProgressDialog.show();
         }
 
@@ -668,7 +677,6 @@ public class MainActivity extends ActionBarActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(MainActivity.this, "Checking for updates...", Toast.LENGTH_LONG).show();
-            mProgressDialog.show();
         }
         
         
@@ -676,21 +684,9 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             if (needsUpdate) {
                 // instantiate it within the onCreate method
-                mProgressDialog = new ProgressDialog(MainActivity.this);
-                mProgressDialog.setTitle("Update");
-                mProgressDialog.setMessage("Downloading newer version");
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setCancelable(false);
                 final DownloadNewVersion downloadNewVersion = new DownloadNewVersion(MainActivity.this);
                 // execute this when the downloader must be fired
                 downloadNewVersion.execute(SinemaConstant.DOWNLOAD_NEW_VERSION_PATH + newVersion + "/" +SinemaConstant.APPNAME + newVersion + ".apk");
-                mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                    	downloadNewVersion.cancel(false);
-                    }
-                });
             }
         }
     }
@@ -710,6 +706,7 @@ public class MainActivity extends ActionBarActivity {
             InputStream input = null;
             OutputStream output = null;
             HttpURLConnection connection = null;
+            mProgressDialog.setMessage("Downloading newer version");
             try {
                 URL url = new URL(sUrl[0]);
                 connection = (HttpURLConnection) url.openConnection();
@@ -774,6 +771,11 @@ public class MainActivity extends ActionBarActivity {
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setTitle("New Update");
             mProgressDialog.show();
         }
 
