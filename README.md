@@ -50,6 +50,7 @@
     jsoup-1.7.3.jar
     unbescape-1.1.0.jar
     universal-image-loader-1.9.2.jar
+    yts.re API
 
 ## Tests
 
