@@ -76,3 +76,8 @@
        See the License for the specific language governing permissions and
        limitations under the License.
 
+##Screenshots
+
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/1.png?raw=true "Main screen")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/2.png?raw=true "Settings")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/3.png?raw=true "Result of search")
