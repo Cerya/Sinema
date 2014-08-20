@@ -30,7 +30,8 @@
     remove the text in there. Once you go back to the main page, it will ask you to choose the path again.
     This will allow you to download from anywhere, anytime (as long as you have a connection to the internet).
     Once you start your computer, BitTorrent Sync will synchronise (no shit) and load the torrents into BitTorrent Client
-    Just make sure BitTorrent Sync is running on the background of your smartphone when you start synchronising with your computer.
+    Just make sure BitTorrent Sync is running on the background of your smartphone when you start synchronising with your 
+    computer.
 
 ## Code Example
 
@@ -59,8 +60,12 @@
 ## Contributors
 
     -
+    
+## Issues
 
-##Licence
+    -
+
+## Licence
 
     Copyright 2014 Nami Shah
     
@@ -76,7 +81,7 @@
        See the License for the specific language governing permissions and
        limitations under the License.
 
-##Screenshots
+## Screenshots
 
 ![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/1.png?raw=true "Main screen")
 ![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/2.png?raw=true "Settings")
