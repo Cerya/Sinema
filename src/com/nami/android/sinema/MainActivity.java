@@ -422,9 +422,9 @@ public class MainActivity extends ActionBarActivity {
                 }
                 
         	} else {
-        		mProgressDialog.setTitle("Connection problem");
+        		//mProgressDialog.setTitle("Connection problem");
         		mProgressDialog.setMessage("Please check your internet connection...\nShutting down Sinema");
-    			mProgressDialog.show();
+    			//mProgressDialog.show();
         		try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
