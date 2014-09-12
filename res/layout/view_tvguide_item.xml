@@ -27,6 +27,9 @@
                 android:id="@+id/txtTvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:maxLines="2"
+                android:singleLine="false"
                 android:text="Z-Nieuws, Z-Beurs, Z-Expert en De Notaristip"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
@@ -53,7 +56,7 @@
                 android:singleLine="true"
                 android:text="Episode 5"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="italic" />
 
         </LinearLayout>

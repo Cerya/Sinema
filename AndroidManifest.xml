@@ -40,11 +40,13 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity android:name="com.coderplus.filepicker.FilePickerActivity" />
         <activity
             android:name=".TVGuideActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_show" >
         </activity>
     </application>
