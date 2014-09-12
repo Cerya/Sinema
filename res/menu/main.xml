@@ -4,9 +4,16 @@
     tools:context="com.nami.android.sinema.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_tvguide"
         android:orderInCategory="100"
+        android:title="@string/action_tvguide"
+        app:showAsAction="never"/>
+        
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
 
 </menu>

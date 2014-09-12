@@ -2,10 +2,10 @@
 <resources>
 
     <string name="app_name">Sinema</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_movie">MovieActivity</string>
-    <string name="title_activity_torrent">TorrentActivity</string>
+    <string name="action_tvguide">TV Guide</string>
     <string name="title_activity_mail">MailActivity</string>
+    <string name="title_activity_show">TV Guide</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

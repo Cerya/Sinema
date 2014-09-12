@@ -160,6 +160,8 @@ public class MainActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 			should_update = true;
+		} else if(id == R.id.action_tvguide) {
+			startActivity(new Intent(MainActivity.this, TVGuideActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
 	}
