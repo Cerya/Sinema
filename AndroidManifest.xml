@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nami.android.sinema"
-    android:versionCode="4"
-    android:versionName="1.4" >
+    android:versionCode="5"
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -48,6 +48,10 @@
             android:name=".TVGuideActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_show" >
+        </activity>
+        <activity
+            android:name=".OptionActivity"
+            android:label="@string/title_activity_option" >
         </activity>
     </application>
 

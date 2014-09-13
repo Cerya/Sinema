@@ -5,7 +5,7 @@ import java.io.File;
 import android.os.Environment;
 
 public final class SinemaConstant {
-	public static final double VERSION = 1.4;
+	public static final double VERSION = 1.5;
 	public static final String APPNAME = "Sinema";
 	public static final String MOVIE_LIST_URL = "http://yts.re/api/list.xml";
 	public static final String MOVIE_DETAIL_URL = "http://yts.re/api/movie.xml";

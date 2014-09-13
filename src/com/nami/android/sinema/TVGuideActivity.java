@@ -13,13 +13,17 @@ import org.unbescape.html.HtmlEscape;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,6 +36,8 @@ public class TVGuideActivity extends Activity {
 	private List<TVGuide> tvguide = new ArrayList<TVGuide>();
 	private ListView list;
 	private ProgressDialog mProgressDialog;
+	private int currentPage = 0;
+	private Handler mHandler = new Handler();
 	List<String> channels = new ArrayList<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,76 @@ public class TVGuideActivity extends Activity {
 		} else {
 			new LoadOperation(TVGuideActivity.this).execute(false);
 		}
+
+		//Buttons +1h | -1h
+		Button btnPlus1 = (Button) findViewById(R.id.btnPlus1);
+		btnPlus1.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				mHandler.removeCallbacksAndMessages(null);
+				currentPage++;
+	    		runOnUiThread(new Runnable(){
+	    		    @Override
+	    		    public void run(){
+	    		    	//Current info
+	    	        	TextView showingNow = (TextView) findViewById(R.id.txtTvInfo);
+	    	    		if(currentPage == 0) {
+	    	    			showingNow.setText("Now");
+	    	    		} else {
+	    	    			if(currentPage < 0)
+	    	    				showingNow.setText("Now ("+currentPage+"h)");
+	    	    			else
+	    	    				showingNow.setText("Now (+"+currentPage+"h)");
+	    	    		}
+	    		    }
+	    		});
+				mHandler.postDelayed(new Runnable() {
+		            @Override
+					public void run() {
+		            	if(adapter!=null){
+							new LoadOperation(TVGuideActivity.this).execute(true);
+							tvguide.clear();
+							list.invalidateViews();
+							adapter.notifyDataSetChanged();
+						}
+		            }
+		        }, 700);    
+			}	
+		});	
+		Button btnMin1 = (Button) findViewById(R.id.btnMinus1);
+		btnMin1.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				mHandler.removeCallbacksAndMessages(null);
+				currentPage--;
+	    		runOnUiThread(new Runnable(){
+	    		    @Override
+	    		    public void run(){
+	    		    	//Current info
+	    	        	TextView showingNow = (TextView) findViewById(R.id.txtTvInfo);
+	    	    		if(currentPage == 0) {
+	    	    			showingNow.setText("Now");
+	    	    		} else {
+	    	    			if(currentPage < 0)
+	    	    				showingNow.setText("Now ("+currentPage+"h)");
+	    	    			else
+	    	    				showingNow.setText("Now (+"+currentPage+"h)");
+	    	    		}
+	    		    }
+	    		});
+				mHandler.postDelayed(new Runnable() {
+		            @Override
+					public void run() {
+		            	if(adapter!=null){
+							new LoadOperation(TVGuideActivity.this).execute(true);
+							tvguide.clear();
+							list.invalidateViews();
+							adapter.notifyDataSetChanged();
+						}
+		            }
+		        }, 700);    
+			}
+		});	
 	}
 	
     private boolean isNetworkAvailable() {
@@ -53,12 +129,13 @@ public class TVGuideActivity extends Activity {
 	
 	private void populateTVGuideList(String filter) throws IOException {
 		
-		Document doc = Jsoup.connect("http://tv.bartv.be").ignoreContentType(true).timeout(10 * 1000).get();
+		Document doc = Jsoup.connect("http://tv.bartv.be/shows/cat/1/"+filter).ignoreContentType(true).timeout(10 * 1000).get();
     	Elements resultList = doc.select(".showitem");
     	Element tvshow = null;
+    	int id = 0;
         for (int i=0;i<resultList.size();i++) {
         	tvshow = resultList.get(i);
-        	int id = 0;
+        	id++;
         	String simage = HtmlEscape.unescapeHtml(tvshow.select("img").first().attr("abs:src"));
         	String title = HtmlEscape.unescapeHtml(tvshow.select(".largelink").html());
         	String episode = HtmlEscape.unescapeHtml(tvshow.select(".episode").html());
@@ -69,7 +146,7 @@ public class TVGuideActivity extends Activity {
         	} else {
         		duration = HtmlEscape.unescapeHtml(tvshow.select("h3").first().nextSibling().toString());
         	}
-        	int progress = Integer.parseInt(tvshow.select("div.progress").first().attr("class").substring(tvshow.select("div.progress").first().attr("class").length()-1));
+        	int progress = Integer.parseInt(tvshow.select("div.progress").first().attr("class").substring(17));
         	
             TVGuide a = new TVGuide(id, simage, title, episode, duration, progress);
             tvguide.add(a);
@@ -117,7 +194,12 @@ public class TVGuideActivity extends Activity {
 			episode.setText(currentShow.getEpisode());
 			//ProgressBar
 			ProgressBar pb = (ProgressBar) itemView.findViewById(R.id.pbTv);
-			pb.setProgress(currentShow.getProgress() * 10);
+			pb.getProgressDrawable().setColorFilter(Color.argb(200, 255, 120, 0), Mode.SRC_IN);
+			if(currentShow.getProgress() < 0){
+				pb.setProgress(0);
+			} else {
+				pb.setProgress(currentShow.getProgress() * 10);
+			}
 			return itemView;
 		}
 	}
@@ -136,11 +218,10 @@ private class LoadOperation extends AsyncTask<Boolean, Integer, String> {
         	if(params[0].booleanValue()){
         		mProgressDialog.setMessage("Fetching channels and show information...");
                 try {
-                	populateTVGuideList("");
+                	populateTVGuideList(""+currentPage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                
         	} else {
         		//mProgressDialog.setTitle("Connection problem");
         		mProgressDialog.setMessage("Please check your internet connection...\nShutting down Sinema");
@@ -187,5 +268,4 @@ private class LoadOperation extends AsyncTask<Boolean, Integer, String> {
             mProgressDialog.dismiss();
         }
     }
-	
 }

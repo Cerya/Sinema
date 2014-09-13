@@ -254,8 +254,8 @@ public class MainActivity extends ActionBarActivity {
 			TextView quality = (TextView) itemView.findViewById(R.id.txtQuality);
 			quality.setText(currentMovie.getQuality());
 			//Seeds
-			TextView seeds = (TextView) itemView.findViewById(R.id.txtSeeds);
-			seeds.setText(currentMovie.getSeeds());
+			TextView txtRating = (TextView) itemView.findViewById(R.id.txtRating);
+			txtRating.setText(""+currentMovie.getRating()+"/10");
 			//Download torrent
 			Button downloadbtn = (Button) itemView.findViewById(R.id.btnTorrent);
 			downloadbtn.setOnClickListener(new OnClickListener(){

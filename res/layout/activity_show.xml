@@ -4,18 +4,49 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp"
     android:paddingLeft="2dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
+    android:paddingRight="2dp"
+    android:paddingTop="5dp"
     tools:context="${relativePackage}.${activityClass}" >
+    
+    
+   	<Button
+      android:id="@+id/btnMinus1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentTop="true"
+      android:background="@drawable/blue_button"
+      android:text="-1h"
+	  style="@style/blue_button_prop" />
 
     <ListView
         android:id="@+id/listTVGuide"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
         android:background="#FFFFFF" >
 
     </ListView>
+
+
+   	<Button
+      android:id="@+id/btnPlus1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentTop="true"
+      android:background="@drawable/orange_button"
+      android:text="+1h"
+	  style="@style/orange_button_prop" />
+
+    <TextView
+        android:id="@+id/txtTvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Now"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
