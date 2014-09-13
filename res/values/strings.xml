@@ -6,7 +6,8 @@
     <string name="action_tvguide">TV Guide</string>
     <string name="title_activity_mail">MailActivity</string>
     <string name="title_activity_show">TV Guide</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_option">OptionActivity</string>
+    <string name="title_activity_option">Sinema</string>
+    <string name="tv_guide">TV Guide</string>
+    <string name="movies">Movies</string>
 
 </resources>

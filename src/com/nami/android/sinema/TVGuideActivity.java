@@ -194,7 +194,7 @@ public class TVGuideActivity extends Activity {
 			episode.setText(currentShow.getEpisode());
 			//ProgressBar
 			ProgressBar pb = (ProgressBar) itemView.findViewById(R.id.pbTv);
-			pb.getProgressDrawable().setColorFilter(Color.argb(200, 255, 120, 0), Mode.SRC_IN);
+			pb.getProgressDrawable().setColorFilter(Color.argb(250, 253, 154, 52), Mode.SRC_IN);
 			if(currentShow.getProgress() < 0){
 				pb.setProgress(0);
 			} else {
