@@ -30,10 +30,6 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".MailActivity"
-            android:label="@string/title_activity_mail" >
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_settings" >

@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FAFAFA"
     android:paddingBottom="0dp"
     android:paddingLeft="2dp"
     android:paddingRight="2dp"
     android:paddingTop="5dp"
     tools:context="${relativePackage}.${activityClass}" >
-    
     
    	<Button
       android:id="@+id/btnMinus1"
@@ -44,7 +44,8 @@
         android:id="@+id/txtTvInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/btnMinus1"
+        android:layout_alignBottom="@+id/btnMinus1"
         android:layout_centerHorizontal="true"
         android:text="Now"
         android:textAppearance="?android:attr/textAppearanceLarge" />

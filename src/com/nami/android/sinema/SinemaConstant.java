@@ -18,8 +18,6 @@ public final class SinemaConstant {
 	public static final String ORDER = "desc";
 	public static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +"Download"+ File.separator;//"/sdcard/Download/";
 	public static final String RETURN_MESSAGE = "Press the back button to return to "+APPNAME;
-	public static final String MAIL_TO = "trigger@ifttt.com";
-	public static final String MAIL_FROM = "sinemaapp@outlook.com";
 	public static final String VERSION_URL = "https://github.com/ShahNami/"+APPNAME+"/tags";
 	public static final String DOWNLOAD_NEW_VERSION_PATH = "https://github.com/ShahNami/"+APPNAME+"/releases/download/";
 	private SinemaConstant(){

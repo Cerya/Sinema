@@ -23,8 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -75,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 	private boolean should_update = true;
 	private ArrayAdapter<Movie> adapter;
 	ListView list;
-	double newVersion = 0.0;
+
 	private static final int REQUEST_PICK_FILE = 999;
 	EditText keywords;
 	@Override
@@ -91,10 +89,12 @@ public class MainActivity extends ActionBarActivity {
 		limit = settings.getString("limit_list", SinemaConstant.LIMIT);
 		order = settings.getString("order_list", SinemaConstant.ORDER);
 		sync_path = settings.getString("sync_path_text", "");
+		String search = getIntent().getStringExtra("search");
 		keywords = (EditText) findViewById(R.id.txtKeywords);
-		new DeleteTask().execute("");
+		if(search != null){
+			keywords.setText(search);
+		}
 		init();
-		new UpdateTask().execute(""); 
 		keywords.setOnKeyListener(new View.OnKeyListener() {
 		@Override
 		public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -115,26 +115,22 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	private void init(){
-		if(isNetworkAvailable()){
-			client = settings.getString("transfer_method_list", SinemaConstant.CLIENT);
-			genre = settings.getString("genre_list", SinemaConstant.GENRE);
-			sort = settings.getString("sort_list", SinemaConstant.SORT);
-			quality = settings.getString("quality_list", SinemaConstant.QUALITY);
-			rating = settings.getString("rating_list", SinemaConstant.RATING);
-			limit = settings.getString("limit_list", SinemaConstant.LIMIT);
-			order = settings.getString("order_list", SinemaConstant.ORDER);
-			sync_path = settings.getString("sync_path_text", "");
-			if(should_update){
-				should_update = false;
-				new LoadOperation(MainActivity.this).execute(true);
-				if(adapter!=null){
-					movies.clear();
-					list.invalidateViews();
-					adapter.notifyDataSetChanged();
-				}
+		client = settings.getString("transfer_method_list", SinemaConstant.CLIENT);
+		genre = settings.getString("genre_list", SinemaConstant.GENRE);
+		sort = settings.getString("sort_list", SinemaConstant.SORT);
+		quality = settings.getString("quality_list", SinemaConstant.QUALITY);
+		rating = settings.getString("rating_list", SinemaConstant.RATING);
+		limit = settings.getString("limit_list", SinemaConstant.LIMIT);
+		order = settings.getString("order_list", SinemaConstant.ORDER);
+		sync_path = settings.getString("sync_path_text", "");
+		if(should_update){
+			should_update = false;
+			new LoadOperation(MainActivity.this).execute(true);
+			if(adapter!=null){
+				movies.clear();
+				list.invalidateViews();
+				adapter.notifyDataSetChanged();
 			}
-		} else {
-			new LoadOperation(MainActivity.this).execute(false);
 		}
 	}
 
@@ -151,6 +147,12 @@ public class MainActivity extends ActionBarActivity {
 		init();
 	}
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+    }
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -160,8 +162,10 @@ public class MainActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 			should_update = true;
+			overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
 		} else if(id == R.id.action_tvguide) {
 			startActivity(new Intent(MainActivity.this, TVGuideActivity.class));
+			overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -410,31 +414,12 @@ public class MainActivity extends ActionBarActivity {
         
         @Override
         protected String doInBackground(Boolean... params) {
-        	if(params[0].booleanValue()){
-        		if(keywords.getText().toString().isEmpty()){
-    	        	mProgressDialog.setMessage("Initializing...\n- Fetching movies\n- Fetching trailers\n- Fetching torrents");
-        		} else {
-	    			mProgressDialog.setMessage("Searching for: " + keywords.getText().toString() + "\n\nCan't find your movie?\nTry searching by actor names");
-        		}
                 try {
                 	populateMovieList("");
                 	
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-                
-        	} else {
-        		//mProgressDialog.setTitle("Connection problem");
-        		mProgressDialog.setMessage("Please check your internet connection...\nShutting down Sinema");
-    			//mProgressDialog.show();
-        		try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		finish();
-        	}
+                }	
         	return null;
         }
         
@@ -452,6 +437,11 @@ public class MainActivity extends ActionBarActivity {
 	        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 	        mProgressDialog.setCancelable(false);
 	        mProgressDialog.setTitle("Loading");
+    		if(keywords.getText().toString().isEmpty()){
+	        	mProgressDialog.setMessage("Initializing...\n- Fetching movies\n- Fetching trailers\n- Fetching torrents");
+    		} else {
+    			mProgressDialog.setMessage("Searching for: " + keywords.getText().toString() + "\n\nCan't find your movie?\nTry searching by actor names");
+    		}
 	        mProgressDialog.show();
 			
         }
@@ -498,40 +488,6 @@ public class MainActivity extends ActionBarActivity {
             mProgressDialog.dismiss();
         }
     }
-	
-	
-	/*
-	 * 
-	 * DELETE TASK
-	 * 
-	 * 
-	 */
-	
-    private class DeleteTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            boolean deleted;
-            int k = Integer.parseInt(String.valueOf(SinemaConstant.VERSION).replace(".", ""));
-            for (int i = 0; i < k; i++) {
-                int major = 0;
-                int minor = 0;
-                int l = String.valueOf(i).length();
-                if (l == 1) {
-                    major = 0;
-                    minor = i;
-                } else {
-                    major = Integer.parseInt(String.valueOf(i).substring(0, l - 1));
-                    minor = Integer.parseInt(String.valueOf(i).substring(l - 1, l));
-                }
-                File file = new File(SinemaConstant.DOWNLOAD_PATH + SinemaConstant.APPNAME + major + "." + minor + ".apk");
-                if (file.exists()) {
-                    deleted = file.delete();
-                }
-            }
-            return null;
-        }
-    }
 
 		
 	/*
@@ -572,8 +528,7 @@ public class MainActivity extends ActionBarActivity {
                 int fileLength = connection.getContentLength();
                 // download the file
                 if (fileLength > 0) {
-            		mProgressDialog.setMessage("Downloading Torrent File");
-                    input = connection.getInputStream();
+            		input = connection.getInputStream();
                     //String dir = SinemaConstant.DOWNLOAD_PATH;
                     //create folder
                     //File folder = new File(dir); //folder name
@@ -629,6 +584,7 @@ public class MainActivity extends ActionBarActivity {
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.setCancelable(false);
             mProgressDialog.setTitle("Downloading");
+            mProgressDialog.setMessage("Downloading Torrent File");
             mProgressDialog.show();
         }
 
@@ -660,172 +616,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
     
-    private class UpdateTask extends AsyncTask<String, Void, String> {
-        Boolean needsUpdate = false;
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-            	needsUpdate = checkForUpdate();
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Toast.makeText(MainActivity.this, "Checking for updates...", Toast.LENGTH_LONG).show();
-        }
-        
-        
-        @Override
-        protected void onPostExecute(String result) {
-            if (needsUpdate) {
-                // instantiate it within the onCreate method
-                final DownloadNewVersion downloadNewVersion = new DownloadNewVersion(MainActivity.this);
-                // execute this when the downloader must be fired
-                downloadNewVersion.execute(SinemaConstant.DOWNLOAD_NEW_VERSION_PATH + newVersion + "/" +SinemaConstant.APPNAME + newVersion + ".apk");
-            }
-        }
-    }
-    
-    
-    private class DownloadNewVersion extends AsyncTask<String, Integer, String> {
-
-        private Context context;
-        private PowerManager.WakeLock mWakeLock;
-
-        public DownloadNewVersion(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected String doInBackground(String... sUrl) {
-            InputStream input = null;
-            OutputStream output = null;
-            HttpURLConnection connection = null;
-            mProgressDialog.setMessage("Downloading newer version");
-            try {
-                URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                // expect HTTP 200 OK, so we don't mistakenly save error report
-                // instead of the file
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
-                }
-
-                // this will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
-
-                // download the file
-                input = connection.getInputStream();
-                output = new FileOutputStream(SinemaConstant.DOWNLOAD_PATH + SinemaConstant.APPNAME + newVersion + ".apk");
-                if (fileLength > 0) {
-                    byte data[] = new byte[fileLength];
-                    long total = 0;
-                    int count;
-                    while ((count = input.read(data)) != -1) {
-                        // allow canceling with back button
-                        if (isCancelled()) {
-                            input.close();
-                            return null;
-                        }
-                        total += count;
-                        // publishing the progress....
-                        if (fileLength > 0) // only if total length is known
-                            publishProgress((int) (total * 100 / fileLength));
-                        output.write(data, 0, count);
-                    }
-                } else {
-                    return "Unable to download new version";
-                }
-            } catch (Exception e) {
-                return e.toString();
-            } finally {
-                try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                }
-
-                if (connection != null)
-                    connection.disconnect();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // take CPU lock to prevent CPU from going off if the user
-            // presses the power button during download
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    getClass().getName());
-            mWakeLock.acquire();
-            mProgressDialog = new ProgressDialog(MainActivity.this);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setTitle("New Update");
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-            // if we get here, length is known, now set indeterminate to false
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.setMax(100);
-            mProgressDialog.setProgress(progress[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            mWakeLock.release();
-            mProgressDialog.dismiss();
-            if (result != null) {
-                Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
-                
-                //Uri packageURI = Uri.parse("package:" + MainActivity.class.getPackage().getName());
-                //Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
-                //startActivity(uninstallIntent);
-                
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(SinemaConstant.DOWNLOAD_PATH + SinemaConstant.APPNAME + newVersion + ".apk")), "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-            }
-        }
-    }
 	
-	/*
-	 * 
-	 * 
-	 * CHECK FUNCTIONS
-	 * INTERNET
-	 * ACTIVITY
-	 * 
-	 */
-    
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 	
 	protected boolean isRunningInForeground() {
 	    ActivityManager manager = 
@@ -839,18 +631,5 @@ public class MainActivity extends ActionBarActivity {
 	    return topActivityName.equalsIgnoreCase(getPackageName());
 	}
 	
-    private boolean checkForUpdate() throws PackageManager.NameNotFoundException, IOException {
-        /* Get current Version Number */
-        //if(exists(MuzeConstants.VERSION_URL)){
-        Document doc = Jsoup.connect(SinemaConstant.VERSION_URL).ignoreContentType(true).timeout(10 * 1000).get();
-        Elements tagList = doc.select(".tag-name");
-        if (SinemaConstant.VERSION < Double.valueOf(tagList.first().html())) {
-            //Download new version
-            newVersion = Double.valueOf(tagList.first().html());
-            return true;
-        }
-        return false;
-        //}
-        //return false;
-    }
+    
 }
