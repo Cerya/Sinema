@@ -83,6 +83,9 @@
 
 ## Screenshots
 
-![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/1.png?raw=true "Main screen")
-![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/2.png?raw=true "Settings")
-![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/3.png?raw=true "Result of search")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/1.png?raw=true "Option screen")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/2.png?raw=true "Movie screen")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/3.png?raw=true "Settings")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/4.png?raw=true "TV Guide")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/5.png?raw=true "TV Guide")
+![alt text](https://raw.githubusercontent.com/ShahNami/Sinema/master/screenshots/6.png?raw=true "TV Guide")
