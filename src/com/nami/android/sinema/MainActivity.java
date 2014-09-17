@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,7 +45,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RatingBar;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -252,8 +254,9 @@ public class MainActivity extends ActionBarActivity {
 			TextView year = (TextView) itemView.findViewById(R.id.txtYear);
 			year.setText(currentMovie.getYear());
 			//Rating
-			RatingBar rating = (RatingBar) itemView.findViewById(R.id.rating);
-			rating.setRating(currentMovie.getRating()/2);
+			ProgressBar rating = (ProgressBar) itemView.findViewById(R.id.pbRating);
+			rating.getProgressDrawable().setColorFilter(Color.argb(250, 44, 36, 84), Mode.SRC_IN);
+			rating.setProgress((int) (currentMovie.getRating()*10));
 			//Quality
 			TextView quality = (TextView) itemView.findViewById(R.id.txtQuality);
 			quality.setText(currentMovie.getQuality());

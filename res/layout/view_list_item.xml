@@ -150,26 +150,19 @@
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 </TableRow>
+
+                <ProgressBar
+                    android:id="@+id/pbRating"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFF"
+                    android:max="100"
+                    android:progress="86" />
+
             </TableLayout>
 
         </LinearLayout>
-
-        <TableRow
-            android:id="@+id/tblRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <RatingBar
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:isIndicator="true"
-                android:longClickable="false"
-                android:numStars="5"
-                android:rating="4.01" />
-
-        </TableRow>
 
         <TableRow
             android:id="@+id/tblButtons"
@@ -179,24 +172,24 @@
 
             <Button
                 android:id="@+id/btnTorrent"
+                style="@style/blue_button_prop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
                 android:background="@drawable/blue_button"
-                android:text="Download"
-        		style="@style/blue_button_prop" />
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="Download" />
 
             <Button
                 android:id="@+id/btnTrailer"
+                style="@style/orange_button_prop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/orange_button"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="Trailer"
-                android:background="@drawable/orange_button"
-        		style="@style/orange_button_prop" />
+                android:text="Trailer" />
 
         </TableRow>
 
