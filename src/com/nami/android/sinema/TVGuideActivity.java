@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.net.ConnectivityManager;
@@ -49,6 +50,9 @@ public class TVGuideActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show);
 		setTitle("TV Guide");
+		int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+		TextView yourTextView = (TextView)findViewById(titleId); 
+		yourTextView.setTextColor(Color.WHITE);
 		if(isNetworkAvailable()){
 			new LoadOperation(TVGuideActivity.this).execute(true);
 		} else {

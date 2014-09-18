@@ -1,0 +1,53 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.nami.android.sinema.FragmentRemote" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FAFAFA"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FAFAFA"
+            android:text="Setup BT Remote"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:scrollbars="horizontal" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#FFFFFF"
+                android:lines="15"
+                android:minLines="5"
+                android:scrollbars="horizontal"
+                android:text=" \u2022 Download BitTorrent Remote from Google Play on your smartphone\n
+\u2022 Install BitTorrent client on your computer\n
+\u2022 In the preferences of BitTorrent client, enable BT remote\n
+\u2022 When downloading a movie with BTR, make sure BT is running on your computer" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -4,10 +4,14 @@
     <string name="app_name">Sinema</string>
     <string name="action_settings">Settings</string>
     <string name="action_tvguide">TV Guide</string>
+    <string name="action_about">TOS and Setup</string>
     <string name="title_activity_mail">MailActivity</string>
     <string name="title_activity_show">TV Guide</string>
     <string name="title_activity_option">Sinema</string>
     <string name="tv_guide">TV Guide</string>
     <string name="movies">Movies</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

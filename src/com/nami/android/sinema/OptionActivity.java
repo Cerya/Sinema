@@ -18,12 +18,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class OptionActivity extends Activity {
@@ -36,6 +39,9 @@ public class OptionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_option);
 		setTitle("Sinema");
+		int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+		TextView yourTextView = (TextView)findViewById(titleId); 
+		yourTextView.setTextColor(Color.WHITE);
 		new DeleteTask().execute("");
 		new UpdateTask().execute(""); 
 		slider = (SlideButton) findViewById(R.id.unlockButton);

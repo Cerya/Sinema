@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    tools:context="com.nami.android.sinema.FragmentNotice" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="#FAFAFA"
+	    android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FAFAFA"
+            android:text="Terms &amp; Conditions"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:scrollbars="horizontal" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#FFFFFF"
+                android:scrollbars="horizontal"
+                android:text="These Terms of Service, or “TOS”, govern the use of the Sinema application, “App”, and any related services, “Services.” You, the “User”, accept these TOS automatically when you launch Sinema, and by accepting, you agree to all of the provisions within the TOS and the Privacy Policy.\n\n
+\u2022 You may only use this application as an overview of the newest movies.\n
+\u2022 You may only download movies that are not copyrighted.\n
+\u2022 The developer of Sinema may not be held responsible for any illegal activity you do using this application." />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

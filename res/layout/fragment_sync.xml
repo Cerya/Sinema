@@ -1,0 +1,59 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.nami.android.sinema.FragmentSync" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FAFAFA"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FAFAFA"
+            android:text="Setup BT Sync"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:scrollbars="horizontal" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#FFFFFF"
+                android:minLines="20"
+                android:scrollbars="horizontal"
+                android:text=" \u2022 Download BitTorrent Sync from Google Play on your smartphone\n
+\u2022 Install BitTorrent client on your computer\n
+\u2022 Install BitTorrent sync on your computer\n
+\u2022 In the preferences of BitTorrent client, go to:\n
+\t\u00BB Directories \u00BB Location of .torrents \u00BB Automatically load .torrents from \u00BB [YOUR BTSYNC DIRECTORY]\n
+\u2022 Check the &apos;delete loaded .torrents&apos; and &apos;enable search in subdirectories&apos;\n
+\u2022 Open Sinema and go to settings, in General \u00BB Transfer Method choose BitTorrent Sync\n
+\u2022 Return to the main activity, a screen will appear\n
+\u2022 Press and hold the directory you have chosen for BTS\n
+\u2022 You can always change this by clearing the BitTorrent Sync Path in the settings activity\n
+\u2022 Once you start your computer, make sure BTS is running on your phone, and BT is running on your computer" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
@@ -82,6 +83,10 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		setTitle("Movies");
+		int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+		TextView yourTextView = (TextView)findViewById(titleId); 
+		yourTextView.setTextColor(Color.WHITE);
 		settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		client = settings.getString("transfer_method_list", SinemaConstant.CLIENT);
 		genre = settings.getString("genre_list", SinemaConstant.GENRE);
@@ -167,6 +172,9 @@ public class MainActivity extends ActionBarActivity {
 			overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
 		} else if(id == R.id.action_tvguide) {
 			startActivity(new Intent(MainActivity.this, TVGuideActivity.class));
+			overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+		} else if(id == R.id.action_about) {
+			startActivity(new Intent(MainActivity.this, AboutActivity.class));
 			overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
 		}
 		return super.onOptionsItemSelected(item);
@@ -483,7 +491,7 @@ public class MainActivity extends ActionBarActivity {
 					intent.putExtra(FilePickerActivity.EXTRA_SELECT_MULTIPLE, false);
 					intent.putExtra(FilePickerActivity.EXTRA_FILE_PATH, Environment.getExternalStorageDirectory().getAbsolutePath());
 					startActivityForResult(intent, REQUEST_PICK_FILE);
-					Toast.makeText(MainActivity.this, "(Long) hold the file you selected for BitTorrent Sync.", Toast.LENGTH_LONG).show();
+					Toast.makeText(MainActivity.this, "Press and hold the file you selected for BitTorrent Sync.", Toast.LENGTH_LONG).show();
 				}
             } else {
             	Toast.makeText(MainActivity.this, "No movies found.", Toast.LENGTH_LONG).show();

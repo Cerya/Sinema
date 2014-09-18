@@ -44,5 +44,53 @@
 	    <item name="android:shadowDy" >1</item>
 	    <item name="android:shadowRadius" >2</item>
   	</style>
+  	
+    
+    <!-- CUSTOM THEME -->
+    
+    
+    
+    <!-- the theme applied to the application or activity -->
+    <style name="SinemaActionBarTheme"
+           parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/SinemaActionBar</item>
+		<item name="android:actionBarTabStyle">@style/MyActionBarTabs</item>
+		<item name="android:actionBarTabBarStyle">@style/MyActionBarTabBarStyle</item>
+        <!-- Support library compatibility -->
+        <item name="actionBarTabStyle">@style/MyActionBarTabs</item>
+        <item name="actionBarStyle">@style/SinemaActionBar</item>
+        <item name="actionBarTabBarStyle">@style/MyActionBarTabBarStyle</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="SinemaActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/actionbar_background</item>
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/actionbar_background</item>
+    </style>
+
+    
+    <!--  CUSTOM THEME WITH TABS -->
+    
+    <!-- ActionBar tabs styles -->
+    <style name="MyActionBarTabs"
+           parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <!-- tab indicator -->
+        <item name="android:background">@drawable/actionbar_tab_indicator</item>
+		<item name="android:paddingLeft">5dp</item>
+    	<item name="android:paddingRight">5dp</item>
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/actionbar_tab_indicator</item>
+    </style>
+    
+    <style name="MyActionBarTabBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
+	    <item name="android:paddingLeft">0dp</item>
+	    <item name="android:paddingRight">0dp</item>
+	    <item name="android:layout_width">wrap_content</item>
+
+	    <item name="android:minWidth">0dp</item>
+	</style>
+    
 
 </resources>
